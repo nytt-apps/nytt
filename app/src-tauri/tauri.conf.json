@@ -7,7 +7,7 @@
     "distDir": "../build"
   },
   "package": {
-    "productName": "app",
+    "productName": "nytt",
     "version": "0.1.0"
   },
   "tauri": {
@@ -29,7 +29,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.test.dev",
+      "identifier": "com.tauri.dev",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -55,11 +55,11 @@
     },
     "windows": [
       {
-        "fullscreen": true,
-        "height": 1600,
-        "resizable": false,
-        "title": "Tauri App",
-        "width": 900
+        "fullscreen": false,
+        "height": 600,
+        "resizable": true,
+        "title": "Nytt",
+        "width": 800
       }
     ]
   }
