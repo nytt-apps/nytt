@@ -13,10 +13,13 @@ function App() {
     .then(json => console.log(json))
 
   const handleClick = async () => {
-    console.log("js")
     let bar = await invoke('say_hi', {
-      valor1: 'abe'
+      valor1: 'React frontend'
     })
+
+    let foo = await invoke('fetch_api')
+
+    console.log(foo)
     console.log(bar)
   }
 
@@ -25,7 +28,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.tsx!</code> and save to reload.
+          Edit <code>src/App.tsx!!</code> and save to reload.
         </p>
         <Counter />
         <button onClick={handleClick} >Clique!</button>
