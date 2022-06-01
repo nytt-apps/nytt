@@ -5,21 +5,25 @@ import './App.css';
 
 import { invoke } from '@tauri-apps/api/tauri'
 
-import { emit, listen } from '@tauri-apps/api/event'
+import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
 
-function App() {
-  // https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=d2460721257142e6ab02f85d003e882d
+const queryClient = new QueryClient()
 
+function Main() {
   const handleClick = async () => {
     let bar:string = await invoke('say_hi', {
       valor1: 'React frontend'
     })
-
     console.log(bar)
-    
+
     let foo:string = await invoke('fetch_api', { url: "https://jsonplaceholder.typicode.com/todos/1" })
     console.log(JSON.parse(foo))
-  
+  }
+
+  const fetchApi = async () => {
+    let foo:string = await invoke('fetch_api', { url: "https://jsonplaceholder.typicode.com/todos/1" })
+    return JSON.parse(foo)
+
     // CORS Error demonstration
       // fetch('https://www.w3schools.com/js/js_json_parse.asp')
       //   .then(response => response.json())
@@ -28,12 +32,25 @@ function App() {
       // console.log(foo)
   }
 
+  // const { isLoading, error, data } = useQuery('repoData', () => invoke('fetch_api', { url: "https://jsonplaceholder.typicode.com/todos/1" }))
+  const { isLoading, error, data } = useQuery('repoData', fetchApi)
+
+  console.log(data)
+
   return (
     <div className="App">
       <Counter />
-      <button onClick={handleClick} >Fetch API</button>   
+      <button onClick={handleClick}>Fetch API</button>
+      <pre id="json">{JSON.stringify(data, undefined, 2)}</pre>
     </div>
-  );
+  )
 }
 
-export default App;
+export default function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Main />
+    </QueryClientProvider>
+  )
+}
+
