@@ -8,40 +8,30 @@ import { invoke } from '@tauri-apps/api/tauri'
 import { emit, listen } from '@tauri-apps/api/event'
 
 function App() {
-  fetch('https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=d2460721257142e6ab02f85d003e882d')
-    .then(response => response.json())
-    .then(json => console.log(json))
+  // https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=d2460721257142e6ab02f85d003e882d
 
   const handleClick = async () => {
-    let bar = await invoke('say_hi', {
+    let bar:string = await invoke('say_hi', {
       valor1: 'React frontend'
     })
 
-    let foo = await invoke('fetch_api')
-
-    console.log(foo)
     console.log(bar)
+    
+    let foo:string = await invoke('fetch_api', { url: "https://jsonplaceholder.typicode.com/todos/1" })
+    console.log(JSON.parse(foo))
+  
+    // CORS Error demonstration
+      // fetch('https://www.w3schools.com/js/js_json_parse.asp')
+      //   .then(response => response.json())
+      //   .then(json => console.log(json))
+      // let foo:string = await invoke('fetch_api', { url: "https://www.w3schools.com/js/js_json_parse.asp" })
+      // console.log(foo)
   }
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx!!</code> and save to reload.
-        </p>
-        <Counter />
-        <button onClick={handleClick} >Clique!</button>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React!
-        </a>
-      </header>
-      
+      <Counter />
+      <button onClick={handleClick} >Fetch API</button>   
     </div>
   );
 }
