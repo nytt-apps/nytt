@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Navbar from './components/Navbar';
+import Nav from './components/Nav';
 import Card from './components/Card';
 import Temperature from './components/Temperature';
 
@@ -30,9 +30,7 @@ function Main() {
   // console.log(data)
 
   return (
-    <div className="p-5 h-screen">
-      <Navbar />
-      <Temperature />
+      <Nav />
       <Swiper
         className="h-5/6"
         modules={[Autoplay, Navigation, Pagination]}
