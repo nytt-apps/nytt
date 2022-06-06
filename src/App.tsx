@@ -2,7 +2,9 @@ import React from 'react';
 import Navbar from './components/Navbar';
 import Card from './components/Card';
 import Temperature from './components/Temperature';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import './App.css';
+import 'swiper/css';
 
 import { invoke } from '@tauri-apps/api/tauri'
 
@@ -26,7 +28,17 @@ function Main() {
   return (
     <div className="App">
       <Temperature />
-      { data.articles.map((article, index) => ( <Card key={index} article={article} /> )) }
+      <Swiper
+      spaceBetween={50}
+      slidesPerView={1}
+      onSlideChange={() => console.log('slide change')}
+      onSwiper={(swiper) => console.log(swiper)}
+      >
+        { data.articles.map((article, index) => ( 
+          <SwiperSlide><Card key={index} article={article} /></SwiperSlide>
+        )) }
+      </Swiper>
+      
     </div>
   )
 }
