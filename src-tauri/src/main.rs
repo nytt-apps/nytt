@@ -4,6 +4,7 @@
 )]
 
 extern crate reqwest;
+use reqwest::header::USER_AGENT;
 
 #[tauri::command]
 fn say_hi(valor1: String) -> String {
@@ -14,8 +15,16 @@ fn say_hi(valor1: String) -> String {
 #[tauri::command]
 async fn fetch_api(url: String) -> String {
   println!("Fetching api...");
-  let response_text = reqwest::get(url)
-    .await.expect("Couldn't make request!")
+  let client = reqwest::Client::new();
+
+
+  let response_text = client
+    .get(url)
+    .header(USER_AGENT, "foo")
+    .send()
+    .await
+    .unwrap()
+    // .expect("Couldn't make request!")
     .text().await.expect("Could not read response text!");
 
   // println!("Response Text: {}", response_text);
