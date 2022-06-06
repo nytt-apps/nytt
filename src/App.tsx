@@ -2,7 +2,6 @@ import React from 'react';
 
 import Nav from './components/Nav';
 import Card from './components/Card';
-import Temperature from './components/Temperature';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation, Pagination } from 'swiper';
@@ -17,44 +16,41 @@ import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
 const queryClient = new QueryClient()
 
 function Main() {
-  const fetchApi = async () => {
-    let foo:string = await invoke('fetch_api', { url: "https://newsapi.org/v2/top-headlines?country=br&category=business&apiKey=d2460721257142e6ab02f85d003e882d" })
+  const fetchNews = async () => {
+    let foo:string = await invoke('fetch_api', { url: `https://newsapi.org/v2/top-headlines?sources=google-news-br&apiKey=${process.env.REACT_APP_NEWS_API_KEY}` })
     return JSON.parse(foo)
   }
 
-  const { isLoading, error, data } = useQuery('repoData', fetchApi)
+  const { isLoading, error, data } = useQuery('news', fetchNews)
 
   if (isLoading) return <p>Loading...</p>
   if (error) return <p>Error</p>
 
-  // console.log(data)
-
   return (
+    <div className="p-5 h-screen flex flex-col">
       <Nav />
-      <Swiper
-        className="h-5/6"
-        modules={[Autoplay, Navigation, Pagination]}
-        autoplay={{
-          delay: 5000,
-          disableOnInteraction: false,
-        }}
-        spaceBetween={50}
-        slidesPerView={1}
-        navigation
-        pagination={{
-          clickable: true,
-        }}
-        onSlideChange={() => console.log('slide change')}
-        onSwiper={(swiper) => console.log(swiper)}
-      >
-        { 
-          data.articles.map((article, index) => ( 
-            <SwiperSlide className="">
-              <Card key={index} article={article} />
-            </SwiperSlide>
-          )) 
-        }
-      </Swiper>
+      <div className="h-full">
+        <Swiper
+          className="h-full"
+          modules={[Autoplay, Navigation, Pagination]}
+          autoplay={{
+            delay: 5000,
+            disableOnInteraction: false,
+          }}
+          spaceBetween={0}
+          slidesPerView={1}
+          navigation
+          // pagination={{ clickable: true, }}
+        >
+          { 
+            data.articles.map((article, index) => ( 
+              <SwiperSlide className="">
+                <Card key={index} article={article} />
+              </SwiperSlide>
+            )) 
+          }
+        </Swiper>
+      </div>
     </div>
   )
 }
