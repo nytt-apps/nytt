@@ -1,10 +1,14 @@
 import React from 'react';
+
 import Navbar from './components/Navbar';
 import Card from './components/Card';
 import Temperature from './components/Temperature';
+
 import { Swiper, SwiperSlide } from 'swiper/react';
-import './App.css';
+import { Autoplay, Navigation, Pagination } from 'swiper';
 import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 import { invoke } from '@tauri-apps/api/tauri'
 
@@ -26,19 +30,33 @@ function Main() {
   // console.log(data)
 
   return (
-    <div className="App">
+    <div className="p-5 h-screen">
+      <Navbar />
       <Temperature />
       <Swiper
-      spaceBetween={50}
-      slidesPerView={1}
-      onSlideChange={() => console.log('slide change')}
-      onSwiper={(swiper) => console.log(swiper)}
+        className="h-5/6"
+        modules={[Autoplay, Navigation, Pagination]}
+        autoplay={{
+          delay: 5000,
+          disableOnInteraction: false,
+        }}
+        spaceBetween={50}
+        slidesPerView={1}
+        navigation
+        pagination={{
+          clickable: true,
+        }}
+        onSlideChange={() => console.log('slide change')}
+        onSwiper={(swiper) => console.log(swiper)}
       >
-        { data.articles.map((article, index) => ( 
-          <SwiperSlide><Card key={index} article={article} /></SwiperSlide>
-        )) }
+        { 
+          data.articles.map((article, index) => ( 
+            <SwiperSlide className="">
+              <Card key={index} article={article} />
+            </SwiperSlide>
+          )) 
+        }
       </Swiper>
-      
     </div>
   )
 }
@@ -46,7 +64,6 @@ function Main() {
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Navbar />
       <Main />
     </QueryClientProvider>
   )
